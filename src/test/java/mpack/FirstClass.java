@@ -1,38 +1,23 @@
 package mpack;
 
-import org.junit.jupiter.api.AfterEach;
+import driver.DriverFactory;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FirstClass {
-
-    private WebDriver driver;
+public class FirstClass {
 
     @Test
-    void openGoogle() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
-        options.addArguments("--disable-gpu");
-
-        driver = new ChromeDriver(options);
+    void openBrowser() {
+        WebDriver driver = DriverFactory.createDriver();
 
         driver.get("https://www.google.com");
 
-        String pageTitle = driver.getTitle();
+        System.out.println("Title of the page is: " + driver.getTitle());
 
-        System.out.println("Title of the page is: " + pageTitle);
+        assertEquals("Google", driver.getTitle());
 
-        assertEquals("Google", pageTitle, "Page title is not correct");
-    }
-
-    @AfterEach
-    void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+        driver.quit();
     }
 }
