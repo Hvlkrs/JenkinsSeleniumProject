@@ -1,18 +1,15 @@
 package tests;
 
-import driver.DriverFactory;
+import base.BaseTest;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
 import pages.LoginPage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LoginTest {
+public class LoginTest extends BaseTest {
 
     @Test
     void validUserCanLogin() {
-        WebDriver driver = DriverFactory.createDriver();
-
         driver.get("https://www.saucedemo.com/");
 
         LoginPage loginPage = new LoginPage(driver);
@@ -22,7 +19,5 @@ public class LoginTest {
                 "https://www.saucedemo.com/inventory.html",
                 driver.getCurrentUrl()
         );
-
-        driver.quit();
     }
 }
