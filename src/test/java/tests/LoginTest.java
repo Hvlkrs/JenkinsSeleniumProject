@@ -1,6 +1,7 @@
 package tests;
 
 import base.BaseTest;
+import config.ConfigReader;
 import org.junit.jupiter.api.Test;
 import pages.LoginPage;
 
@@ -10,10 +11,13 @@ public class LoginTest extends BaseTest {
 
     @Test
     void validUserCanLogin() {
-        driver.get("https://www.saucedemo.com/");
+        driver.get(ConfigReader.getBaseUrl());
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("standard_user", "secret_sauce");
+        loginPage.login(
+                ConfigReader.getSauceUsername(),
+                ConfigReader.getSaucePassword()
+        );
 
         assertEquals(
                 "https://www.saucedemo.com/inventory.html",
