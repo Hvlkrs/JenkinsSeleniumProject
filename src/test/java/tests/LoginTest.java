@@ -14,6 +14,7 @@ public class LoginTest extends BaseTest {
         driver.get(ConfigReader.getBaseUrl());
 
         LoginPage loginPage = new LoginPage(driver);
+
         loginPage.login(
                 ConfigReader.getSauceUsername(),
                 ConfigReader.getSaucePassword()

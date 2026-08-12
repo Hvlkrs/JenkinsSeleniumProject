@@ -14,6 +14,10 @@ public class ConfigReader {
         return getValue("BASE_URL", "https://www.saucedemo.com/");
     }
 
+    public static boolean isHeadless() {
+        return Boolean.parseBoolean(getValue("HEADLESS", "true"));
+    }
+
     private static String getValue(String key, String defaultValue) {
         String value = System.getenv(key);
 
