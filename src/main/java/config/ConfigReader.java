@@ -1,30 +1,55 @@
 package config;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 public class ConfigReader {
 
-    public static String getSauceUsername() {
-        return getValue("SAUCE_USERNAME", "standard_user");
-    }
+    private static final Properties properties = new Properties();
 
-    public static String getSaucePassword() {
-        return getValue("SAUCE_PASSWORD", "secret_sauce");
+    static {
+        try (InputStream input = ConfigReader.class
+                .getClassLoader()
+                .getResourceAsStream("config.properties")) {
+
+            if (input == null) {
+                throw new RuntimeException("config.properties not found");
+            }
+
+            properties.load(input);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load config.properties", e);
+        }
     }
 
     public static String getBaseUrl() {
-        return getValue("BASE_URL", "https://www.saucedemo.com/");
+        return getValue("BASE_URL", "base.url");
+    }
+
+    public static String getSauceUsername() {
+        return getValue("SAUCE_USERNAME", "sauce.username");
+    }
+
+    public static String getSaucePassword() {
+        return getValue("SAUCE_PASSWORD", "sauce.password");
     }
 
     public static boolean isHeadless() {
-        return Boolean.parseBoolean(getValue("HEADLESS", "true"));
+        return Boolean.parseBoolean(
+                getValue("HEADLESS", "headless")
+        );
     }
 
-    private static String getValue(String key, String defaultValue) {
-        String value = System.getenv(key);
+    private static String getValue(String environmentVariable, String property) {
 
-        if (value == null || value.isBlank()) {
-            return defaultValue;
+        String envValue = System.getenv(environmentVariable);
+
+        if (envValue != null && !envValue.isBlank()) {
+            return envValue;
         }
 
-        return value;
+        return properties.getProperty(property);
     }
 }
