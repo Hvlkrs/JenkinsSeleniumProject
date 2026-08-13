@@ -2,15 +2,12 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
+import utils.WaitUtils;
 
 public class LoginPage {
 
     private final WebDriver driver;
-    private final WebDriverWait wait;
+    private final WaitUtils waitUtils;
 
     private final By usernameInput = By.id("user-name");
     private final By passwordInput = By.id("password");
@@ -18,21 +15,21 @@ public class LoginPage {
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.waitUtils = new WaitUtils(driver);
     }
 
     public void enterUsername(String username) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameInput))
+        waitUtils.waitForElementVisible(usernameInput)
                 .sendKeys(username);
     }
 
     public void enterPassword(String password) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordInput))
+        waitUtils.waitForElementVisible(passwordInput)
                 .sendKeys(password);
     }
 
     public void clickLogin() {
-        wait.until(ExpectedConditions.elementToBeClickable(loginButton))
+        waitUtils.waitForElementClickable(loginButton)
                 .click();
     }
 
