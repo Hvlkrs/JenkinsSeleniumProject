@@ -13,11 +13,9 @@ public class ConfigReader {
                 .getClassLoader()
                 .getResourceAsStream("config.properties")) {
 
-            if (input == null) {
-                throw new RuntimeException("config.properties not found");
+            if (input != null) {
+                properties.load(input);
             }
-
-            properties.load(input);
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to load config.properties", e);
@@ -25,24 +23,27 @@ public class ConfigReader {
     }
 
     public static String getBaseUrl() {
-        return getValue("BASE_URL", "base.url");
+        return getValue("BASE_URL", "base.url", "https://www.saucedemo.com/");
     }
 
     public static String getSauceUsername() {
-        return getValue("SAUCE_USERNAME", "sauce.username");
+        return getValue("SAUCE_USERNAME", "sauce.username", "standard_user");
     }
 
     public static String getSaucePassword() {
-        return getValue("SAUCE_PASSWORD", "sauce.password");
+        return getValue("SAUCE_PASSWORD", "sauce.password", "secret_sauce");
     }
 
     public static boolean isHeadless() {
         return Boolean.parseBoolean(
-                getValue("HEADLESS", "headless")
+                getValue("HEADLESS", "headless", "true")
         );
     }
 
-    private static String getValue(String environmentVariable, String property) {
+    private static String getValue(
+            String environmentVariable,
+            String property,
+            String defaultValue) {
 
         String envValue = System.getenv(environmentVariable);
 
@@ -50,6 +51,12 @@ public class ConfigReader {
             return envValue;
         }
 
-        return properties.getProperty(property);
+        String propertyValue = properties.getProperty(property);
+
+        if (propertyValue != null && !propertyValue.isBlank()) {
+            return propertyValue;
+        }
+
+        return defaultValue;
     }
 }

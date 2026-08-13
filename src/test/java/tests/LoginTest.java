@@ -3,6 +3,7 @@ package tests;
 import base.BaseTest;
 import config.ConfigReader;
 import org.junit.jupiter.api.Test;
+import pages.CartPage;
 import pages.InventoryPage;
 import pages.LoginPage;
 
@@ -67,6 +68,20 @@ public class LoginTest extends BaseTest {
         assertEquals(
                 "1",
                 inventoryPage.getCartItemCount()
+        );
+
+        inventoryPage.openCart();
+
+        CartPage cartPage = new CartPage(driver);
+
+        assertEquals(
+                "Sauce Labs Backpack",
+                cartPage.getItemName()
+        );
+
+        assertEquals(
+                "$29.99",
+                cartPage.getItemPrice()
         );
     }
 }

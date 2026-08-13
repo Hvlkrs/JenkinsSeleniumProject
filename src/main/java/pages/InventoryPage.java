@@ -15,6 +15,9 @@ public class InventoryPage {
     private final By shoppingCartBadge =
             By.cssSelector(".shopping_cart_badge");
 
+    private final By shoppingCart =
+            By.cssSelector(".shopping_cart_link");
+
     public InventoryPage(WebDriver driver) {
         this.driver = driver;
         this.waitUtils = new WaitUtils(driver);
@@ -33,4 +36,10 @@ public class InventoryPage {
         return waitUtils.waitForElementVisible(shoppingCartBadge)
                 .getText();
     }
+
+    public void openCart() {
+        waitUtils.waitForElementClickable(shoppingCart)
+                .click();
+    }
+
 }
