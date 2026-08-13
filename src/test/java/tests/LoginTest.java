@@ -25,4 +25,21 @@ public class LoginTest extends BaseTest {
                 driver.getCurrentUrl()
         );
     }
+
+    @Test
+    void invalidUserCannotLogin() {
+        driver.get(ConfigReader.getBaseUrl());
+
+        LoginPage loginPage = new LoginPage(driver);
+
+        loginPage.login(
+                "invalid_user",
+                "wrong_password"
+        );
+
+        assertEquals(
+                "Epic sadface: Username and password do not match any user in this service",
+                loginPage.getErrorMessage()
+        );
+    }
 }
