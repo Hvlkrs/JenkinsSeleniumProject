@@ -3,13 +3,18 @@ pipeline {
 
     environment {
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+        SAUCE_CREDENTIALS = credentials('sauce-credentials')
+        SAUCE_USERNAME = "${SAUCE_CREDENTIALS_USR}"
+        SAUCE_PASSWORD = "${SAUCE_CREDENTIALS_PSW}"
+
+        BASE_URL = 'https://www.saucedemo.com/'
+        HEADLESS = 'true'
     }
 
     stages {
-        stage('Test Pipeline') {
+        stage('Run Tests') {
             steps {
-                echo 'Jenkins pipeline is working!'
-                sh 'echo Running Maven tests...'
                 sh 'mvn clean test'
             }
         }
