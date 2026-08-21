@@ -3,11 +3,6 @@ pipeline {
 
     environment {
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-
-        SAUCE_CREDENTIALS = credentials('sauce-credentials')
-        SAUCE_USERNAME = "${SAUCE_CREDENTIALS_USR}"
-        SAUCE_PASSWORD = "${SAUCE_CREDENTIALS_PSW}"
-
         BASE_URL = 'https://www.saucedemo.com/'
         HEADLESS = 'true'
     }
@@ -15,7 +10,15 @@ pipeline {
     stages {
         stage('Run Tests') {
             steps {
-                sh 'mvn clean test'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'sauce-credentials',
+                        usernameVariable: 'SAUCE_USERNAME',
+                        passwordVariable: 'SAUCE_PASSWORD'
+                    )
+                ]) {
+                    sh 'mvn clean test'
+                }
             }
         }
     }
